@@ -1,0 +1,510 @@
+{
+    "project": {
+        "0": "0",
+        "1": ".",
+        "2": "1",
+        "3": ".",
+        "4": "0"
+    },
+    "files": {
+        "src\\xq.js": {
+            "name": "src\\xq.js",
+            "modules": {},
+            "classes": {
+                "xq": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "xq": {
+            "name": "xq",
+            "shortname": "xq",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src\\xq.js",
+            "line": 48,
+            "description": "xq构造器，第一个参数可传入字符串，函数，传入字符串会判断是html，还是css选择器，查找或生成对应节点。",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "selection",
+                    "description": "传入的css选择器或是html字符串或是function，function会自动加入DOMContentLoaded",
+                    "type": "String|DOM|Function"
+                },
+                {
+                    "name": "content",
+                    "description": "要查找根节点",
+                    "type": "Node"
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src\\xq.js",
+            "line": 59,
+            "description": "xq的原生对象，可对此对象添加方法来扩展xq",
+            "itemtype": "property",
+            "name": "fn",
+            "type": "object",
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 92,
+            "description": "遍历所有元素",
+            "itemtype": "method",
+            "name": "each",
+            "params": [
+                {
+                    "name": "handler",
+                    "description": "处理函数",
+                    "type": "Function"
+                },
+                {
+                    "name": "args",
+                    "description": "传入处理函数的参数",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "void"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 107,
+            "description": "遍历所有的元素，并返回所有处理函数返回的结果",
+            "itemtype": "method",
+            "name": "map",
+            "params": [
+                {
+                    "name": "handler",
+                    "description": "处理函数",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "返回xq对象",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 120,
+            "description": "取当前xq对象中某段元素",
+            "itemtype": "method",
+            "name": "slice",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "要取数组中的开始的位置",
+                    "type": "Number"
+                }
+            ],
+            "papam": "[length] {Number} 要取的长度",
+            "return": {
+                "description": "返回结果",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 132,
+            "description": "取i指定的索引的元素，返回为xq对象",
+            "methoc": "eq",
+            "params": [
+                {
+                    "name": "i",
+                    "description": "要取的索引值",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "返回i索引值所在的元素",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 142,
+            "description": "取xq对象中第一个元素",
+            "itemtype": "method",
+            "name": "first",
+            "return": {
+                "description": "",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 150,
+            "description": "取xq对象中最后一个元素",
+            "itemtype": "method",
+            "name": "last",
+            "return": {
+                "description": "",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 158,
+            "description": "取index位的原生元素",
+            "itemtype": "method",
+            "name": "get",
+            "return": {
+                "description": "",
+                "type": "Element"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 168,
+            "description": "获得当前元素的在父元素中的位置",
+            "itemtype": "method",
+            "name": "index",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "",
+                    "type": "Element"
+                }
+            ],
+            "return": {
+                "description": "元素的索引值",
+                "type": "Number"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 183,
+            "description": "返回el元素在当前xq对象的位置，from作为查找的开始位置",
+            "itemtype": "method",
+            "name": "indexOf",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "传入的el",
+                    "type": "Element"
+                },
+                {
+                    "name": "from",
+                    "description": "传入的开始位置",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "返回索引值，如果未找到，则返回-1",
+                "type": "Number"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 197,
+            "description": "返回当前xq对象最后一个元素",
+            "itemtype": "method",
+            "name": "end",
+            "return": {
+                "description": "",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 205,
+            "description": "压入元素",
+            "itemtype": "method",
+            "name": "push",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "要压入的元素",
+                    "type": "Element",
+                    "multiple": true
+                }
+            ],
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 211,
+            "description": "排序方法",
+            "itemtype": "method",
+            "name": "sort",
+            "params": [
+                {
+                    "name": "handler",
+                    "description": "自定义排序函数",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "返回本身的xq对象",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 218,
+            "description": "剪切当前xq对象中某段元素并返回",
+            "itemtype": "method",
+            "name": "splice",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "要裁剪的开始位置",
+                    "type": "Number"
+                },
+                {
+                    "name": "length",
+                    "description": "要裁剪的长度",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "返回结果的xq对象",
+                "type": "Xq"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 248,
+            "description": "归还占有的全局xq变量，返回xq对象",
+            "itemtype": "method",
+            "name": "noConfict",
+            "return": {
+                "description": "",
+                "type": "Xq"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 258,
+            "description": "改变函数执行上下文",
+            "itemtype": "method",
+            "name": "proxy",
+            "params": [
+                {
+                    "name": "fun",
+                    "description": "要改变上下文的函数",
+                    "type": "Function"
+                },
+                {
+                    "name": "object",
+                    "description": "上下文对象",
+                    "type": "Object"
+                },
+                {
+                    "name": "args",
+                    "description": "要入函数的额外参数",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "返回函数",
+                "type": "Function"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 277,
+            "description": "去除字符串头尾的空格字符串",
+            "itemtype": "method",
+            "name": "trim",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "字符串",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "被裁剪头尾空格的字符串",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 288,
+            "description": "对集合遍历处理",
+            "itemtype": "method",
+            "name": "each",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "要遍历的对象",
+                    "type": "Object|Array"
+                },
+                {
+                    "name": "handler",
+                    "description": "处理函数",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "void"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 297,
+            "description": "筛选集合对象",
+            "itemtype": "method",
+            "name": "grep",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "要筛选的对象",
+                    "type": "Array|Object"
+                },
+                {
+                    "name": "handler",
+                    "description": "筛选函数",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "返回筛选结果",
+                "type": "Array|Object"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 314,
+            "description": "遍历集合，并返回合并后处理函数返回结果",
+            "itemtype": "method",
+            "name": "map",
+            "params": [
+                {
+                    "name": "list",
+                    "description": "要遍历的数组对象",
+                    "type": "Array"
+                },
+                {
+                    "name": "handler",
+                    "description": "处理函数",
+                    "type": "Function"
+                },
+                {
+                    "name": "args",
+                    "description": "传入参数",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "返回数组对象",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 331,
+            "description": "返回对象的类型",
+            "itemtype": "method",
+            "name": "type",
+            "params": [
+                {
+                    "name": "o",
+                    "description": "任何类型",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "返回类型的字符串表示",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 365,
+            "description": "对象转换为json字符串",
+            "itemtype": "method",
+            "name": "stringify",
+            "params": [
+                {
+                    "name": "对象",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "返回json字符串",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 373,
+            "description": "json字符串转换为Object",
+            "itemtype": "method",
+            "name": "parseJSON",
+            "params": [
+                {
+                    "name": "json",
+                    "description": "json字符串",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "返回Object",
+                "type": "Object"
+            },
+            "static": 1,
+            "class": "xq"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: papam",
+            "line": " src\\xq.js:120"
+        },
+        {
+            "message": "unknown tag: methoc",
+            "line": " src\\xq.js:132"
+        },
+        {
+            "message": "Missing item type\n取i指定的索引的元素，返回为xq对象",
+            "line": " src\\xq.js:132"
+        }
+    ]
+}

@@ -1,3 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\xq.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/xq.html">xq</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src\xq.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
 ;!function(window,document,undefined){
 	var protoString = Object.prototype.toString,
 		ap = Array.prototype,
@@ -11,13 +99,13 @@
 	function each(source,handler,args){
 		var i;
 		if(!source) return this;
-		if(typeof handler !== 'function') return this;
+		if(typeof handler !== &#x27;function&#x27;) return this;
 		args = args || [];
-		if(Type(source) === '[object Array]'){
-			for(i=0;i<source.length;i++){
+		if(Type(source) === &#x27;[object Array]&#x27;){
+			for(i=0;i&lt;source.length;i++){
 				if(handler.apply(source[i],args.concat(source[i],i,source))) return;
 			}
-		}else if(Type(source) === '[object Object]'){
+		}else if(Type(source) === &#x27;[object Object]&#x27;){
 			for(i in source){
 				if(!source.hasOwnProperty(i)) continue;
 				if(handler.apply(source[i],args.concat(source[i],i,source))) return;
@@ -26,25 +114,25 @@
 		return this;
 	}
 
-	each("Object Function Array String Number Boolean Date RegExp Null Undefined".split(" "),function(val,i){
-		xq['is'+val] = function(o){
-			return Type(o).toLowerCase() === ('[object '+val+']').toLowerCase();
+	each(&quot;Object Function Array String Number Boolean Date RegExp Null Undefined&quot;.split(&quot; &quot;),function(val,i){
+		xq[&#x27;is&#x27;+val] = function(o){
+			return Type(o).toLowerCase() === (&#x27;[object &#x27;+val+&#x27;]&#x27;).toLowerCase();
 		};
 	});
 	xq.isArguments = function(o){
 		var t = Type(o).toLowerCase();
-		return t === '[object arguments]' || t === '[object object]' && o.callee && 'length' in o;
+		return t === &#x27;[object arguments]&#x27; || t === &#x27;[object object]&#x27; &amp;&amp; o.callee &amp;&amp; &#x27;length&#x27; in o;
 	}
-	each("Document Element Attr".split(" "),function(val,i){
-		xq['is'+val] = function(o){
-			return Type(o).toLowerCase().indexOf(val.toLowerCase()) > -1;
+	each(&quot;Document Element Attr&quot;.split(&quot; &quot;),function(val,i){
+		xq[&#x27;is&#x27;+val] = function(o){
+			return Type(o).toLowerCase().indexOf(val.toLowerCase()) &gt; -1;
 		};
 	});
-	var tagreg = /^<([^<>]+)>$/i,
-		htmlreg = /^<([^<>]+)>.*?<\/\1>$/i,
+	var tagreg = /^&lt;([^&lt;&gt;]+)&gt;$/i,
+		htmlreg = /^&lt;([^&lt;&gt;]+)&gt;.*?&lt;\/\1&gt;$/i,
 		trimreg = /^\s+|\s+$/mg,
 		//对象是否存在__proto__属性
-		existProto = '__proto__' in {};
+		existProto = &#x27;__proto__&#x27; in {};
 	/**
 	 * xq构造器，第一个参数可传入字符串，函数，传入字符串会判断是html，还是css选择器，查找或生成对应节点。
 	 *
@@ -73,7 +161,7 @@
 					selection = document.createElement(RegExp.$1);
 					this.push(selection);
 				}else if(htmlreg.test(selection)){
-					var tmp = document.createElement('div');
+					var tmp = document.createElement(&#x27;div&#x27;);
 					tmp.innerHTML = selection;
 					ap.push.apply(this,tmp.childNodes);
 				}else{
@@ -100,7 +188,7 @@
 		each:function(handler,args){
 			if(!handler) return this;
 			args = args || [];
-			for(var i=0;i<this.length;i++){
+			for(var i=0;i&lt;this.length;i++){
 				if(handler.apply(this[i],args.concat(this[i],i,this))) return;
 			}
 		},
@@ -136,8 +224,8 @@
 		 * @return {xq} 返回i索引值所在的元素
 		 */
 		eq:function(i){
-			if(i<0 && this.length+i < 0 || i>0 && i>=this.length) return null;
-			return xq(i < 0 ? this[this.length-1] : this[i]);
+			if(i&lt;0 &amp;&amp; this.length+i &lt; 0 || i&gt;0 &amp;&amp; i&gt;=this.length) return null;
+			return xq(i &lt; 0 ? this[this.length-1] : this[i]);
 		},
 		/**
 		 * 取xq对象中第一个元素
@@ -162,7 +250,7 @@
 		 */
 		get:function(index){
 			if(isNaN(index)) return null;
-			index = index < 0 ? this.length - index : index;
+			index = index &lt; 0 ? this.length - index : index;
 			return this[index];
 		},
 		/**
@@ -172,7 +260,7 @@
 		 * @return {Number} 元素的索引值
 		 */
 		index:function(el){
-			el = el instanceof xq && el[0] || this[0];
+			el = el instanceof xq &amp;&amp; el[0] || this[0];
 			var i = 0;
 			if(!el) return i;
 			while(el = el.previousSibling){
@@ -189,7 +277,7 @@
 		 */
 		indexOf:ap.indexOf || function(el,from){
 			var from = from || 0;
-			for(var i=from,len=this.length;i<len;i++){
+			for(var i=from,len=this.length;i&lt;len;i++){
 				if(this[i] === el) return i;
 			}
 			return -1;
@@ -226,7 +314,7 @@
 			var tmp = xq();
 			push.apply(tmp,splice.apply(this,arguments));
 			return tmp;
-		}
+		},
 
 	};
 
@@ -243,7 +331,7 @@
 		return ret;
 	};
 	xq.fn.init.prototype = xq.fn;
-	var _xq = window.xq,_$ = window.$;
+	var _xq = window.xq;
 	xq.extend({
 		/**
 		 * 归还占有的全局xq变量，返回xq对象
@@ -253,7 +341,6 @@
 		 */
 		noConfict:function(){
 			window.xq = _xq;
-			window.$ = _$;
 			return xq;
 		},
 		/**
@@ -283,8 +370,8 @@
 		 * @static
 		 */
 		trim:function(str){
-			str += '';
-			return str.trim ? str.trim() : str.replace(trimreg,'');
+			str += &#x27;&#x27;;
+			return str.trim ? str.trim() : str.replace(trimreg,&#x27;&#x27;);
 		},
 		/**
 		 * 对集合遍历处理
@@ -313,23 +400,6 @@
 			return result;
 		},
 		/**
-		 * 获得value在list中的索引值
-		 * @method indexOf
-		 * @param list {Array} 被查找的数组
-		 * @param value {Any} 查找的元素
-		 * @return {Number} 返回索引值
-		 */
-		indexOf:function(list,value){
-			var index = -1;
-			each(list,function(v,i){
-				if(value === v){
-					index = i;
-					return true;
-				}
-			});
-			return index;
-		},
-		/**
 		 * 遍历集合，并返回合并后处理函数返回结果
 		 * @method map
 		 * @param list {Array} 要遍历的数组对象
@@ -354,30 +424,30 @@
 		 * @static
 		 */
 		type:function(o){
-			if(o === null) return 'null';
-			if(o === undefined) return 'undefined';
-			if(o && xq.isArguments(o)) return 'arguments';
+			if(o === null) return &#x27;null&#x27;;
+			if(o === undefined) return &#x27;undefined&#x27;;
+			if(o &amp;&amp; xq.isArguments(o)) return &#x27;arguments&#x27;;
 			switch(Type(o).toLowerCase()){
-				case '[object object]':
-					return 'object';
-				case '[object string]':
-					return 'string';
-				case '[object array]':
-					return 'array';
-				case '[object function]':
-					return 'function';
-				case '[object number]':
-					return 'number';
-				case '[object boolean]':
-					return 'boolean';
-				case '[object date]':
-					return 'date';
-				case '[object error]':
-					return 'error';
-				case '[object regexp]':
-					return 'regexp';
-				case '[object math]':
-					return 'math';
+				case &#x27;[object object]&#x27;:
+					return &#x27;object&#x27;;
+				case &#x27;[object string]&#x27;:
+					return &#x27;string&#x27;;
+				case &#x27;[object array]&#x27;:
+					return &#x27;array&#x27;;
+				case &#x27;[object function]&#x27;:
+					return &#x27;function&#x27;;
+				case &#x27;[object number]&#x27;:
+					return &#x27;number&#x27;;
+				case &#x27;[object boolean]&#x27;:
+					return &#x27;boolean&#x27;;
+				case &#x27;[object date]&#x27;:
+					return &#x27;date&#x27;;
+				case &#x27;[object error]&#x27;:
+					return &#x27;error&#x27;;
+				case &#x27;[object regexp]&#x27;:
+					return &#x27;regexp&#x27;;
+				case &#x27;[object math]&#x27;:
+					return &#x27;math&#x27;;
 			}
 		},
 		/**
@@ -387,7 +457,7 @@
 		 * @return {String} 返回json字符串
 		 * @static
 		 */
-		stringify:typeof JSON !== 'undefined' && JSON.stringify && null || stringify,
+		stringify:JSON &amp;&amp; JSON.stringify &amp;&amp; null || stringify,
 		/**
 		 * json字符串转换为Object
 		 * @method parseJSON
@@ -395,34 +465,34 @@
 		 * @return {Object} 返回Object
 		 * @static 
 		 */
-		parseJSON:typeof JSON !== 'undefined' && JSON.parse || parse
+		parseJSON:JSON &amp;&amp; JSON.parse || parse
 	});
 	window.xq = xq;
 	function stringify(o){
 		var t = xq.type(o),i,l,len;
-		if(t === 'string') return '"'+o+'"';
-		if(t === 'date') return 'new Date(' + o.getTime() + ')';
-		if(t === 'regexp' || t === 'boolean' || t === 'number' || t === 'function') return o.toString();
-		if(t === 'array'){
+		if(t === &#x27;string&#x27;) return &#x27;&quot;&#x27;+o+&#x27;&quot;&#x27;;
+		if(t === &#x27;date&#x27;) return &#x27;new Date(&#x27; + o.getTime() + &#x27;)&#x27;;
+		if(t === &#x27;regexp&#x27; || t === &#x27;boolean&#x27; || t === &#x27;number&#x27; || t === &#x27;function&#x27;) return o.toString();
+		if(t === &#x27;array&#x27;){
 			l = [];
-			for(i=0,len=o.length;i<len;i++){
+			for(i=0,len=o.length;i&lt;len;i++){
 				l.push(stringify(o[i]))
 			}
-			return '[' + l.join(',') + ']';
+			return &#x27;[&#x27; + l.join(&#x27;,&#x27;) + &#x27;]&#x27;;
 		}
-		if(t === 'object'){
+		if(t === &#x27;object&#x27;){
 			l = [];
 			for(i in o){
-				if(o.hasOwnProperty(i))l.push('"' + i + '"' + ':' + stringify(o[i]))
+				if(o.hasOwnProperty(i))l.push(&#x27;&quot;&#x27; + i + &#x27;&quot;&#x27; + &#x27;:&#x27; + stringify(o[i]))
 			}
-			return '{' + l.join(',') + '}';
+			return &#x27;{&#x27; + l.join(&#x27;,&#x27;) + &#x27;}&#x27;;
 		}
-		if(t === 'unll' || t === 'undefined') return 'null';
+		if(t === &#x27;unll&#x27; || t === &#x27;undefined&#x27;) return &#x27;null&#x27;;
 		return null;
 	}
 	function parse(str){
 		try{
-			return (new Function('return ' + str))();
+			return (new Function(&#x27;return &#x27; + str))();
 		}catch(e){
 			return null;
 		}
@@ -432,3 +502,23 @@
 
 
 
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

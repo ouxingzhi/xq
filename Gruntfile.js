@@ -43,5 +43,5 @@ module.exports = function(grunt){
 
 
 	//执行默认任务
-	grunt.registerTask('default',['clean','jshint','uglify','yuidoc']);
+	grunt.registerTask('default',['clean','uglify','yuidoc']);
 };
