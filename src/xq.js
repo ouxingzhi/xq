@@ -1,4 +1,8 @@
 ;!function(window,document,undefined){
+
+	var name = 'xqFramework',
+		version = '0.1.0';
+
 	var protoString = Object.prototype.toString,
 		ap = Array.prototype,
 		push = ap.push,
@@ -35,11 +39,20 @@
 		var t = Type(o).toLowerCase();
 		return t === '[object arguments]' || t === '[object object]' && o.callee && 'length' in o;
 	}
-	each("Document Element Attr".split(" "),function(val,i){
-		xq['is'+val] = function(o){
-			return Type(o).toLowerCase().indexOf(val.toLowerCase()) > -1;
-		};
-	});
+	xq.isWindow = function(o){
+		return o === o.window && 'history' in o && 'location' in o && 'document' in o;
+	};
+	xq.isDocument = function(o){
+		return typeof o === 'object' && o.nodeType === 9 && 'getElementById' in o;
+	}
+	xq.isElement = function(o){
+		return typeof o === 'object' && o.nodeType === 1 && 'getElementsByTagName' in o;
+	}
+	xq.isEmpty = function(o){
+		if(!o) return true;
+		for(var i in o){ if(o.hasOwnProperty(i)) return false;}
+		return true;
+	}
 	var tagreg = /^<([^<>]+)>$/i,
 		htmlreg = /^<([^<>]+)>.*?<\/\1>$/i,
 		trimreg = /^\s+|\s+$/mg,
@@ -56,6 +69,8 @@
 	function xq(selection,content){
 		return new xq.fn.init(selection,content);
 	}
+
+	var identity = 0;
 	/**
 	 * xq的原生对象，可对此对象添加方法来扩展xq
 	 * @property fn
@@ -67,6 +82,7 @@
 		length:0,
 		init:function(selection,content){
 			this.content = content;
+			this.selector = selection;
 			if(xq.isString(selection)){
 				selection = xq.trim(selection);
 				if(tagreg.exec(selection)){
@@ -78,8 +94,9 @@
 					ap.push.apply(this,tmp.childNodes);
 				}else{
 					var result = oQuery(selection,content);
-					return existProto ? (result.__proto__ = xq.fn,result.content = content,result) : (push.apply(this,result),this);
+					return existProto ? (result.__proto__ = xq.fn,result.content = content,result.selector = selection,result) : (push.apply(this,result),this);
 				}
+			}else if(xq.isWindow(selection)){
 
 			}else if(xq.isElement(selection)){
 				this.push(selection);
@@ -246,6 +263,16 @@
 	var _xq = window.xq,_$ = window.$;
 	xq.extend({
 		/**
+		 * 版本
+		 * @property
+		 */
+		version:version,
+
+		identification: name + +new Date() +Math.random().toString().replace('.',''),
+		identity:function(){
+			return identity++;
+		},
+		/**
 		 * 归还占有的全局xq变量，返回xq对象
 		 * @method noConfict
 		 * @return {xq} 
@@ -395,7 +422,37 @@
 		 * @return {Object} 返回Object
 		 * @static 
 		 */
-		parseJSON:typeof JSON !== 'undefined' && JSON.parse || parse
+		parseJSON:typeof JSON !== 'undefined' && JSON.parse || parse,
+		/**
+		 * 将集合转换为数组
+		 * @method toArray
+		 * @param list {NodeList|Arguments|Object} 集合类型的对象
+		 * @return {Array} 返回集合
+		 */
+		toArray:function(list){
+			if(list.toArray) return list.toArray();
+			try{
+				return slice.call(list);
+			}catch(e){
+				for(var ret=[],i=0,l=list.length;i<l;i++)ret[i] = list[i];
+				return ret;
+			}
+		},
+		/**
+		 * 判断一个元素是否另一个元素内
+		 * @method container
+		 * @param el {Node} 子元素
+		 * @param parent {Node} 父元素
+		 * @return {Boolean}  
+		 */
+		container:function(el,parent,endnode){
+			var rel = el.parentNode;
+			do{
+				if(rel === parent) return true;
+				if(endnode && rel === endnode) return false;
+			}while(rel = rel.parentNode);
+			return false;
+		}
 	});
 	window.xq = xq;
 	function stringify(o){
