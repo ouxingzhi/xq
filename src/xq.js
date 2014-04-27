@@ -10,18 +10,50 @@
 		splice = ap.splice,
 		Type = function(o){
 			return protoString.call(o);
+		},
+		MARK = {};
+
+	"Object Function Array String Number Boolean Date RegExp Null Undefined".replace(/\S+/g,function(val){
+		xq['is'+val] = function(o){
+			return Type(o).toLowerCase() === ('[object '+val+']').toLowerCase();
 		};
+	});
+	
+	xq.isArguments = function(o){
+		var t = Type(o).toLowerCase();
+		return t === '[object arguments]' || t === '[object object]' && o.callee && 'length' in o;
+	}
+	xq.isWindow = function(o){
+		return o && typeof o === 'object' && o === o.window && 'history' in o && 'location' in o && 'document' in o;
+	};
+	xq.isDocument = function(o){
+		return typeof o === 'object' && o.nodeType === 9 && 'getElementById' in o;
+	};
+	xq.isElement = function(o){
+		return typeof o === 'object' && o.nodeType === 1 && 'getElementsByTagName' in o;
+	};
+	xq.isNodeList = function(o){
+		return o && 'length' in o && typeof o.item === 'function';
+	};
+	xq.isEmpty = function(o){
+		if(!o) return true;
+		for(var i in o){ if(o.hasOwnProperty(i)) return false;}
+		return true;
+	};
+	xq.isXqObject = function(o){
+		return o instanceof xq;
+	};
 
 	function each(source,handler,args){
-		var i;
+		var i,l;
 		if(!source) return this;
-		if(typeof handler !== 'function') return this;
+		if(!xq.isFunction(handler)) return this;
 		args = args || [];
-		if(Type(source) === '[object Array]'){
-			for(i=0;i<source.length;i++){
+		if(xq.isArray(source) || xq.isArguments(source) || xq.isNodeList(source)){
+			for(i=0,l=source.length;i<l;i++){
 				if(handler.apply(source[i],args.concat(source[i],i,source))) return;
 			}
-		}else if(Type(source) === '[object Object]'){
+		}else if(xq.isObject(source)){
 			for(i in source){
 				if(!source.hasOwnProperty(i)) continue;
 				if(handler.apply(source[i],args.concat(source[i],i,source))) return;
@@ -30,29 +62,6 @@
 		return this;
 	}
 
-	each("Object Function Array String Number Boolean Date RegExp Null Undefined".split(" "),function(val,i){
-		xq['is'+val] = function(o){
-			return Type(o).toLowerCase() === ('[object '+val+']').toLowerCase();
-		};
-	});
-	xq.isArguments = function(o){
-		var t = Type(o).toLowerCase();
-		return t === '[object arguments]' || t === '[object object]' && o.callee && 'length' in o;
-	}
-	xq.isWindow = function(o){
-		return o === o.window && 'history' in o && 'location' in o && 'document' in o;
-	};
-	xq.isDocument = function(o){
-		return typeof o === 'object' && o.nodeType === 9 && 'getElementById' in o;
-	}
-	xq.isElement = function(o){
-		return typeof o === 'object' && o.nodeType === 1 && 'getElementsByTagName' in o;
-	}
-	xq.isEmpty = function(o){
-		if(!o) return true;
-		for(var i in o){ if(o.hasOwnProperty(i)) return false;}
-		return true;
-	}
 	var tagreg = /^<([^<>]+)>$/i,
 		htmlreg = /^<([^<>]+)>.*?<\/\1>$/i,
 		trimreg = /^\s+|\s+$/mg,
@@ -81,8 +90,10 @@
 		constructor:xq,
 		length:0,
 		init:function(selection,content){
+			content = content || document;
 			this.content = content;
 			this.selector = selection;
+			this.__ident__ = {};
 			if(xq.isString(selection)){
 				selection = xq.trim(selection);
 				if(tagreg.exec(selection)){
@@ -91,14 +102,12 @@
 				}else if(htmlreg.test(selection)){
 					var tmp = document.createElement('div');
 					tmp.innerHTML = selection;
-					ap.push.apply(this,tmp.childNodes);
+					this.push.apply(this,tmp.childNodes);
 				}else{
 					var result = oQuery(selection,content);
-					return existProto ? (result.__proto__ = xq.fn,result.content = content,result.selector = selection,result) : (push.apply(this,result),this);
+					this.push.apply(this,result);
 				}
-			}else if(xq.isWindow(selection)){
-
-			}else if(xq.isElement(selection)){
+			}else if(xq.isElement(selection) || xq.isDocument(selection) || xq.isWindow(selection)){
 				this.push(selection);
 			}else if(xq.isFunction(selection)){
 				xq.ready(selection);
@@ -130,7 +139,7 @@
 		map:function(handler){
 			var result = xq();
 			this.each(function(val,i,s){
-				push.apply(result,[].concat(handler.call(this,val,i,s)));
+				result.push.apply(result,[].concat(handler.call(this,val,i,s)));
 			});
 			return result;
 		},
@@ -143,7 +152,7 @@
 		 */
 		slice:function(){
 			var tmp = xq();
-			push.apply(tmp,slice.apply(this,arguments));
+			tmp.push.apply(tmp,slice.apply(this,arguments));
 			return tmp;
 		},
 		/**
@@ -224,7 +233,25 @@
 		 * @method push
 		 * @param el* {Element} 要压入的元素
 		 */
-		push:push,
+		push:function(){
+			var self = this,
+				args = ap.slice.call(arguments);
+			xq.each(args,function(el){
+				if(xq.isElement(el)){
+					if(!self.__existIdent(el)){
+						ap.push.call(self,el);
+						self.__addIdent(el);
+					}
+				}else if(xq.isXqObject(el)){
+					el.each(function(el){
+						if(!self.__existIdent(el)){
+							ap.push.call(self,el);
+							self.__addIdent(el);
+						}
+					});
+				}
+			});
+		},
 		/**
 		 * 排序方法
 		 * @method sort
@@ -240,11 +267,32 @@
 		 * @return {xq} 返回结果的xq对象
  		 */
 		splice:function(){
-			var tmp = xq();
-			push.apply(tmp,splice.apply(this,arguments));
+			var tmp = xq(),self = this,
+				dels = splice.apply(this,arguments);
+			xq.each(dels,function(el){
+				self.__delIdent(el);
+			});
+			tmp.push.apply(tmp,dels);
 			return tmp;
+		},
+		__existIdent:function(el){
+			var id = xq.getIdentity(el);
+			return this.__ident__[id] === MARK;
+		},
+		__delIdent:function(el){
+			if(xq.isElement(el)){
+				var id = xq.getIdentity(el);
+				delete this.__ident__[id];
+			}else if(xq.isXqObject(el)){
+				el.each(function(el){
+					xq.__delIdent(el);
+				});
+			}
+		},
+		__addIdent:function(el){
+			var id = xq.getIdentity(el);
+			this.__ident__[id] = MARK;
 		}
-
 	};
 
 	xq.fn.extend = xq.extend = function(ret,obj){
@@ -384,6 +432,7 @@
 			if(o === null) return 'null';
 			if(o === undefined) return 'undefined';
 			if(o && xq.isArguments(o)) return 'arguments';
+			if(o !== o) return 'NaN';
 			switch(Type(o).toLowerCase()){
 				case '[object object]':
 					return 'object';
@@ -452,9 +501,21 @@
 				if(endnode && rel === endnode) return false;
 			}while(rel = rel.parentNode);
 			return false;
-		}
+		},
+		/**
+		 * 判断一个元素是否符合一个CSS选择器
+		 * @method matches
+		 * @param node {Node} 元素
+		 * @param selector {Node} 要匹配的选择器
+		 * @return {Boolean}  
+		 */
+		matches:function(node,selector){
+			return oQuery.matchesSelector.apply(oQuery,arguments);
+		},
+		noop:function(){}
 	});
 	window.xq = xq;
+	window.$ = xq;
 	function stringify(o){
 		var t = xq.type(o),i,l,len;
 		if(t === 'string') return '"'+o+'"';
@@ -489,3 +550,82 @@
 
 
 
+/**
+ * xQ framework data module
+ */
+
+;!function(window,document,xq){
+	var cache = {};
+
+	function getIdentity(el){
+		return el[xq.identification] ? el[xq.identification] : (el[xq.identification] = xq.identity());
+	}
+	function getData(el,name){
+		var id = getIdentity(el);
+		cache[id] = cache[id] || {};
+		return cache[id][name] || null;
+	}
+
+	function addData(el,name,value){
+		var id = getIdentity(el);
+		cache[id] = cache[id] || {};
+		cache[id][name] = value;
+	}
+	function removeData(el,name){
+		var id = getIdentity(el);
+		cache[id] = cache[id] || {};
+		if(name){
+			delete cache[id][name];
+		}else{
+			delete cache[id];
+		}
+	}
+	xq.extend({
+		data:function(el,name,value){
+			if(value){
+				addData(el,name,value);
+			}else{
+				return getData(el,name);
+			}
+		},
+		removeData:removeData,
+		getIdentity:getIdentity
+	});
+	xq.fn.extend({
+		/**
+		 * 给元素对象设置数据，value不传则为取数据
+		 * @method data
+		 * @param name {any} 设置或读取的数据名
+		 * @param value {any} 保存的数据
+		 * @return {xq|any} 设置数据返回的是xq对象，读取数据则返回数据本身
+		 */
+		data:function(name,value){
+			if(value){
+				this.each(function(el){
+					addData(el,name,value);
+				})
+				return this;
+			}else{
+				if(!this.length) return null;
+				if(this.length === 1) return getData(el,name);
+				var res = [];
+				this.each(function(el){
+					res.push(getData(el,name));
+				});
+				return res;
+			}
+		},
+		/**
+		 * 删除当前元素对象的数据
+		 * @method data
+		 * @param name {any} 删除数据的名称
+		 * @return {xq} 返回的是xq对象
+		 */
+		removeData:function(name){
+			this.each(function(el){
+				removeData(el,name);
+			});
+			return this;
+		}
+	});
+}(window,document,xq);

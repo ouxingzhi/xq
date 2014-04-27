@@ -10,8 +10,9 @@
     
     <script src="../../oquery/src/oquery.js"></script>
     <script src="../src/xq.js"></script>
-    <script src="../src/xq.data.js"></script>
+    <script src="../src/xq.filter.js"></script>
     <script src="../src/xq.event.js"></script>
+    <script src="../src/xq.attribute.js"></script>
     <script src="../src/xq.dom.js"></script>
     <style>
        #body{ height:300px; background:#888; }
@@ -20,8 +21,11 @@
     </style>
 </head>
 
-<body>
+<body> 
+
+    asf
     <div id="body">
+
         <div class="box" id="box1">
             <div id="bbox2">ddd</div>
         </div>
@@ -31,17 +35,17 @@
         <div class="box"  id="box3">
             <div id="bbox2">ddd</div>
         </div>
+        <img src="/service/script.php" />
     </div>
+        
     <script>
-   	    /*var q = xq('.die');
-        q.live('click',function(){
-            alert('ss');
-        });
-        var box = xq('#box1');
-        box.bind('click',function(){
-            xq('body')
-        })*/
-        alert(document.nodeType);
+        var body = $('body');
+        
+        console.log(body.find('.box'));
+
+    </script>
+    <script>
+
     </script>
 </body>
 
