@@ -1,5 +1,5 @@
 /**
- * xqFramework 属性相关方法
+ * xqFramework 属性模块
  */
 ;!function(window,document,xq){
 	var attrMaps = {

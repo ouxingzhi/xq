@@ -14,6 +14,7 @@
     <script src="../src/xq.event.js"></script>
     <script src="../src/xq.attribute.js"></script>
     <script src="../src/xq.dom.js"></script>
+    <script src="../src/xq.ajax.js"></script>
     <style>
        #body{ height:300px; background:#888; }
        .box{ height:200px; width:200px; background:#f00; }
@@ -35,14 +36,33 @@
         <div class="box"  id="box3">
             <div id="bbox2">ddd</div>
         </div>
-        <img src="/service/script.php" />
     </div>
         
     <script>
-        var body = $('body');
-        
-        console.log(body.find('.box'));
+        $.ready(function(){
+            /*$.ajax({
+                url:'http://localhost:8099/service/script.php?EID=IEE&DIEE=SWW',
+                data:{
+                    username:'ouxingzhi',
+                    sex:'man',
+                    dest:'我叫欧新志'
+                },
+                type:'post',
+                dataType:'json',
+                contentType:'appliction/json',
+                success:function(data){
+                    console.log('success',data);
+                },
+                error:function(){
+                    console.log('error');
+                },
+                timeout:3000
+            });*/
 
+            $.getScript('http://localhost:8099/service/script.php?EID=IEE&DIEE=SWW&CALLBACK=dfg',function(){
+                alert('aaa');
+            });
+        });
     </script>
     <script>
 

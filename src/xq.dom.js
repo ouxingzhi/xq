@@ -1,5 +1,5 @@
 /**
- * xqFramework DOM相关方法 
+ * xqFramework DOM模块
  */
 ;!function(window,document,xq){
 	var dom = document.createElement('div');

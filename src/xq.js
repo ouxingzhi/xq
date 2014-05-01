@@ -478,6 +478,7 @@
 		 * @param list {NodeList|Arguments|Object} 集合类型的对象
 		 * @return {Array} 返回集合
 		 */
+		parseXML:parseXML,
 		toArray:function(list){
 			if(list.toArray) return list.toArray();
 			try{
@@ -543,6 +544,15 @@
 			return (new Function('return ' + str))();
 		}catch(e){
 			return null;
+		}
+	}
+	function parseXML(str){
+		if(window.DOMParser){
+			return (new DOMParser()).parseFromString(str,'text/xml');
+		}else if(window.ActiveXObject){
+			return (new window.ActiveXObject('MSXML2.DOMDocument')).loadXML(str);
+		}else{
+			throw 'Browser does not support XML';
 		}
 	}
 }(window,document);

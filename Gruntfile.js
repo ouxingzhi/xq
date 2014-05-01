@@ -1,34 +1,43 @@
-module.exports = function(grunt){
+module.exports = function(grunt) {
 	grunt.initConfig({
-		pkg:grunt.file.readJSON('package.json'),
-		uglify:{
-			options:{
-				banner:'/* <%=pkg.name%> <%=pkg.version%> <%= grunt.template.today("yyyy-mm-dd")%> */\r\n'
-				,compress:true
-				,mangle:true
+		pkg: grunt.file.readJSON('package.json'),
+		uglify: {
+			options: {
+				banner: '/* <%=pkg.name%> <%=pkg.version%> <%= grunt.template.today("yyyy-mm-dd")%> */\r\n',
+				compress: true,
+				mangle: true
 			},
-			build:{
-				expand:true,
-				cwd:'src/',
-				src:'**/*.js',
-				dest:'build/'
+			build: {
+				expand: true,
+				cwd: 'src/',
+				src: '**/*.js',
+				dest: 'build/'
 			}
 		},
-		clean:['build/*','docs/*'],
-		jshint:{
-			options:{
-				undef:true,
-				browser:true,
-				devel:true
+		clean: ['build/*', 'docs/*'],
+		jshint: {
+			options: {
+				undef: true,
+				browser: true,
+				devel: true
 			},
-			all:['src/**/*.js']
+			all: ['src/**/*.js']
 		},
-		yuidoc:{
-			name:"<%=pkg.name%>",
-			version:"<%=pkg.version%>",
-			options:{
-				paths:"src/",
-				outdir:"docs/"
+		yuidoc: {
+			name: "<%=pkg.name%>",
+			version: "<%=pkg.version%>",
+			options: {
+				paths: "src/",
+				outdir: "docs/"
+			}
+		},
+		concat: {
+			normal: {
+				src:[
+					'../oquery/src/oquery.js',
+					'src/*.js'
+				],
+				dest: 'build/xq.debug.js'
 			}
 		}
 	});
@@ -43,5 +52,5 @@ module.exports = function(grunt){
 
 
 	//执行默认任务
-	grunt.registerTask('default',['clean','uglify','yuidoc']);
+	grunt.registerTask('default', ['clean', 'concat', 'uglify', 'yuidoc']);
 };

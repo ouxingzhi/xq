@@ -7,6 +7,34 @@
         "4": "0"
     },
     "files": {
+        "src\\xq.attribute.js": {
+            "name": "src\\xq.attribute.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\xq.dom.js": {
+            "name": "src\\xq.dom.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\xq.event.js": {
+            "name": "src\\xq.event.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\xq.filter.js": {
+            "name": "src\\xq.filter.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\xq.js": {
             "name": "src\\xq.js",
             "modules": {},
@@ -28,7 +56,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src\\xq.js",
-            "line": 48,
+            "line": 70,
             "description": "xq构造器，第一个参数可传入字符串，函数，传入字符串会判断是html，还是css选择器，查找或生成对应节点。",
             "is_constructor": 1,
             "params": [
@@ -47,8 +75,48 @@
     },
     "classitems": [
         {
+            "file": "src\\xq.attribute.js",
+            "line": 1,
+            "description": "xqFramework 属性模块",
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.dom.js",
+            "line": 1,
+            "description": "xqFramework DOMģ��",
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.event.js",
+            "line": 1,
+            "description": "xq事件模块",
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.event.js",
+            "line": 271,
+            "description": "添加页面DOM准备完成时的回调",
+            "itemtype": "method",
+            "name": "ready",
+            "static": 1,
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.filter.js",
+            "line": 1,
+            "description": "xqFramework 筛选相关方法",
+            "class": "xq"
+        },
+        {
             "file": "src\\xq.js",
-            "line": 59,
+            "line": 83,
             "description": "xq的原生对象，可对此对象添加方法来扩展xq",
             "itemtype": "property",
             "name": "fn",
@@ -58,7 +126,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 92,
+            "line": 118,
             "description": "遍历所有元素",
             "itemtype": "method",
             "name": "each",
@@ -82,7 +150,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 107,
+            "line": 133,
             "description": "遍历所有的元素，并返回所有处理函数返回的结果",
             "itemtype": "method",
             "name": "map",
@@ -101,7 +169,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 120,
+            "line": 146,
             "description": "取当前xq对象中某段元素",
             "itemtype": "method",
             "name": "slice",
@@ -121,7 +189,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 132,
+            "line": 158,
             "description": "取i指定的索引的元素，返回为xq对象",
             "methoc": "eq",
             "params": [
@@ -139,7 +207,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 142,
+            "line": 168,
             "description": "取xq对象中第一个元素",
             "itemtype": "method",
             "name": "first",
@@ -151,7 +219,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 150,
+            "line": 176,
             "description": "取xq对象中最后一个元素",
             "itemtype": "method",
             "name": "last",
@@ -163,7 +231,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 158,
+            "line": 184,
             "description": "取index位的原生元素",
             "itemtype": "method",
             "name": "get",
@@ -175,7 +243,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 168,
+            "line": 194,
             "description": "获得当前元素的在父元素中的位置",
             "itemtype": "method",
             "name": "index",
@@ -194,7 +262,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 183,
+            "line": 209,
             "description": "返回el元素在当前xq对象的位置，from作为查找的开始位置",
             "itemtype": "method",
             "name": "indexOf",
@@ -218,7 +286,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 197,
+            "line": 223,
             "description": "返回当前xq对象最后一个元素",
             "itemtype": "method",
             "name": "end",
@@ -230,7 +298,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 205,
+            "line": 231,
             "description": "压入元素",
             "itemtype": "method",
             "name": "push",
@@ -246,7 +314,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 211,
+            "line": 255,
             "description": "排序方法",
             "itemtype": "method",
             "name": "sort",
@@ -265,7 +333,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 218,
+            "line": 262,
             "description": "剪切当前xq对象中某段元素并返回",
             "itemtype": "method",
             "name": "splice",
@@ -290,7 +358,15 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 248,
+            "line": 313,
+            "description": "版本",
+            "itemtype": "property",
+            "name": "",
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 323,
             "description": "归还占有的全局xq变量，返回xq对象",
             "itemtype": "method",
             "name": "noConfict",
@@ -303,7 +379,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 258,
+            "line": 334,
             "description": "改变函数执行上下文",
             "itemtype": "method",
             "name": "proxy",
@@ -334,7 +410,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 277,
+            "line": 353,
             "description": "去除字符串头尾的空格字符串",
             "itemtype": "method",
             "name": "trim",
@@ -354,7 +430,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 288,
+            "line": 364,
             "description": "对集合遍历处理",
             "itemtype": "method",
             "name": "each",
@@ -378,7 +454,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 297,
+            "line": 373,
             "description": "筛选集合对象",
             "itemtype": "method",
             "name": "grep",
@@ -403,7 +479,31 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 314,
+            "line": 390,
+            "description": "获得value在list中的索引值",
+            "itemtype": "method",
+            "name": "indexOf",
+            "params": [
+                {
+                    "name": "list",
+                    "description": "被查找的数组",
+                    "type": "Array"
+                },
+                {
+                    "name": "value",
+                    "description": "查找的元素",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "返回索引值",
+                "type": "Number"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 407,
             "description": "遍历集合，并返回合并后处理函数返回结果",
             "itemtype": "method",
             "name": "map",
@@ -434,7 +534,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 331,
+            "line": 424,
             "description": "返回对象的类型",
             "itemtype": "method",
             "name": "type",
@@ -454,7 +554,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 365,
+            "line": 459,
             "description": "对象转换为json字符串",
             "itemtype": "method",
             "name": "stringify",
@@ -474,7 +574,7 @@
         },
         {
             "file": "src\\xq.js",
-            "line": 373,
+            "line": 467,
             "description": "json字符串转换为Object",
             "itemtype": "method",
             "name": "parseJSON",
@@ -491,20 +591,156 @@
             },
             "static": 1,
             "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 475,
+            "description": "将集合转换为数组",
+            "itemtype": "method",
+            "name": "toArray",
+            "params": [
+                {
+                    "name": "list",
+                    "description": "集合类型的对象",
+                    "type": "NodeList|Arguments|Object"
+                }
+            ],
+            "return": {
+                "description": "返回集合",
+                "type": "Array"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 490,
+            "description": "判断一个元素是否另一个元素内",
+            "itemtype": "method",
+            "name": "container",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "子元素",
+                    "type": "Node"
+                },
+                {
+                    "name": "parent",
+                    "description": "父元素",
+                    "type": "Node"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 505,
+            "description": "判断一个元素是否符合一个CSS选择器",
+            "itemtype": "method",
+            "name": "matches",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "元素",
+                    "type": "Node"
+                },
+                {
+                    "name": "selector",
+                    "description": "要匹配的选择器",
+                    "type": "Node"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 553,
+            "description": "xQ framework data module",
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 595,
+            "description": "给元素对象设置数据，value不传则为取数据",
+            "itemtype": "method",
+            "name": "data",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "设置或读取的数据名",
+                    "type": "Any"
+                },
+                {
+                    "name": "value",
+                    "description": "保存的数据",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "设置数据返回的是xq对象，读取数据则返回数据本身",
+                "type": "Xq|any"
+            },
+            "class": "xq"
+        },
+        {
+            "file": "src\\xq.js",
+            "line": 618,
+            "description": "删除当前元素对象的数据",
+            "itemtype": "method",
+            "name": "data",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "删除数据的名称",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "返回的是xq对象",
+                "type": "Xq"
+            },
+            "class": "xq"
         }
     ],
     "warnings": [
         {
             "message": "unknown tag: papam",
-            "line": " src\\xq.js:120"
+            "line": " src\\xq.js:146"
         },
         {
             "message": "unknown tag: methoc",
-            "line": " src\\xq.js:132"
+            "line": " src\\xq.js:158"
+        },
+        {
+            "message": "Missing item type\nxqFramework 属性模块",
+            "line": " src\\xq.attribute.js:1"
+        },
+        {
+            "message": "Missing item type\nxqFramework DOMģ��",
+            "line": " src\\xq.dom.js:1"
+        },
+        {
+            "message": "Missing item type\nxq事件模块",
+            "line": " src\\xq.event.js:1"
+        },
+        {
+            "message": "Missing item type\nxqFramework 筛选相关方法",
+            "line": " src\\xq.filter.js:1"
         },
         {
             "message": "Missing item type\n取i指定的索引的元素，返回为xq对象",
-            "line": " src\\xq.js:132"
+            "line": " src\\xq.js:158"
+        },
+        {
+            "message": "Missing item type\nxQ framework data module",
+            "line": " src\\xq.js:553"
         }
     ]
 }

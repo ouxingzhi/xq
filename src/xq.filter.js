@@ -202,9 +202,6 @@
 		},
 		add:function(){
 			this.push.apply(this,arguments);
-		},
-		contents:function(){
-
 		}
 	});
 }(window,document,xq);
