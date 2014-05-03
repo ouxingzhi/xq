@@ -219,7 +219,7 @@
 
 	var jsonpNumber = 0;
 	function _jsonp(ops) {
-		var callbackName = ops.jsonpCallback ? ops.jsonpCallback : ('xqjsonp' + jsonpNumber++ + String(Math.random()).replace('.','')),
+		var callbackName = ops.jsonpCallback ? ops.jsonpCallback : ('xqjsonp' + (jsonpNumber++)+String(Math.random()).replace('.','')),
 			isComplete = false,
 			jsonp = ops.jsonp,
 			datastr,clearId,
@@ -336,6 +336,31 @@
 				success:callback
 			});
 		},
-		getScript:_getScript
+		getScript:_getScript,
+		ajaxSetup:function(ops){
+			xq.extend(config,ops);
+		}
+	});
+
+	xq.fn.extend({
+		load:function(url,data,callback){
+			if(!xq.isObject(data)){
+				callback = data;
+				data = null;
+			}
+			ajax({
+				url:url,
+				data:data,
+				type:data ? 'post' : 'get',
+				dataType:'html',
+				context:this,
+				success:function(html){
+					this.each(function(el){
+						xq(el).html(html);
+					})
+				}
+			});
+			return this;
+		}
 	});
 }(window, document, xq);
