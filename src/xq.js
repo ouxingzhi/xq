@@ -63,7 +63,7 @@
 	}
 
 	var tagreg = /^<([^<>]+)>$/i,
-		htmlreg = /^<([^<>]+)>.*?<\/\1>$/i,
+		htmlreg = /^<([^<>]+)>.*?/i,
 		trimreg = /^\s+|\s+$/mg,
 		//对象是否存在__proto__属性
 		existProto = '__proto__' in {};

@@ -132,7 +132,7 @@
 			}
 			return null;
 		},
-		val:function(el,val){
+		val:function(val){
 			if(val){
 				this.each(function(el){
 					xq.val(el,val);
