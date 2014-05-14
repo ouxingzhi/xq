@@ -3,16 +3,30 @@
  */
 
 ;!function(window,document,xq){
-	var regNumber = /^\d+(?:\.(?:\d+)?)?$/,
-		regNotNumber = /[^\d\.]/;
+	var regNumber = /^-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+))$/,
+		regNum = /^(-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+)))([a-z]+)/i,
+		regNotNumber = /[^\d\.-]/,
+		regPixel = /^-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+))px$/i;
 	function _getRealCss(el,name){
-		if(window.getComputedStyle){
-			return window.getComputedStyle(el)[name];
-		}else if(el.currentStyle){
-			return el.currentStyle[name];
-		}
-		return null; 
-	}
+        var ret = null,matches,left,rsleft;
+        name = _buildPropertyName(name);
+        if(window.getComputedStyle){
+            ret = window.getComputedStyle(el)[name];
+        }else if(el.currentStyle){
+            ret = el.currentStyle[name];
+            //ie取绝对值
+            if(matches = regNum.exec(ret)){
+                left = el.style.left;
+                rsleft = el.runtimeStyle && el.runtimeStyle.left;
+                el.style.left = name === 'fontSize' ? '1em' : (ret || 0);
+                ret = el.style.pixelLeft + 'px';
+
+                el.style.left = left;
+                if(rsleft) el.runtimeStyle.left = rsleft;
+            }
+        }
+        return ret === '' ? 'auto' :ret; 
+    }
 
 	function _buildPropertyName(name){
 		var ns = name.split('-');
@@ -23,7 +37,7 @@
 					continue;
 				}
 				if(i === 0) continue;
-				a = ns[i].split('');
+				var a = ns[i].split('');
 				a[0] = a[0].toUpperCase();
 				ns[i] = a.join('');
 			}
@@ -57,6 +71,17 @@
 			left:left
 		};
 	}
+
+	xq.extend({
+		css:function(el,name,val){
+			if(!val){
+				return _getRealCss(el,name);
+			}else{
+				_css(el,name,val);
+			}
+		}
+	});
+
 	xq.fn.extend({
 		css:function(name,val){
 			if(!val){
