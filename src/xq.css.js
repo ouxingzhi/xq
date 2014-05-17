@@ -12,6 +12,8 @@
         name = _buildPropertyName(name);
         if(window.getComputedStyle){
             ret = window.getComputedStyle(el)[name];
+        }else if(el.currentStyle && _getRealMap[name]){
+        	ret = _getRealMap[name](el,name) + 'px';
         }else if(el.currentStyle){
             ret = el.currentStyle[name];
             //ie取绝对值
@@ -25,8 +27,18 @@
                 if(rsleft) el.runtimeStyle.left = rsleft;
             }
         }
-        return ret === '' ? 'auto' :ret; 
+        if(ret === 'auto') ret = '0px'; 
+        return ret === '' ? '0px' :ret; 
     }
+
+    var _getRealMap = {
+    	'height':function(el){
+    		return el.clientHeight;
+    	},
+    	'width':function(el){
+    		return el.clientWidth;
+    	}
+    };
 
 	function _buildPropertyName(name){
 		var ns = name.split('-');
@@ -46,13 +58,13 @@
 	}
 	function _css(el,name,val){
 		if(!el) return null;
-		if(!val){
+		if(!val && !xq.isString(val)){
 			return _getRealCss(el,name);
 		}
 		//如果值为纯数字则加上默认单位px
-		if(regNumber.test(val)){
+		/*if(regNumber.test(val)){
 			val += 'px';
-		}
+		}*/
 		//如果使用
 		if(name.indexOf('-') > -1){
 			name = _buildPropertyName(name);
@@ -72,8 +84,18 @@
 		};
 	}
 
+	function _getDisplay(el){
+
+	}
+
 	xq.extend({
 		css:function(el,name,val){
+			if(xq.isObject(name)){
+				xq.each(name,function(val,name){
+					xq.css(el,name,val);
+				});
+				return;
+			}
 			if(!val){
 				return _getRealCss(el,name);
 			}else{
@@ -84,7 +106,14 @@
 
 	xq.fn.extend({
 		css:function(name,val){
-			if(!val){
+			var self = this;
+			if(xq.isObject(name)){
+				xq.each(name,function(val,name){
+					self.css(name,val);
+				});
+				return;
+			}
+			if(!val && !xq.isString(val)){
 				return _css(this[0],name);
 			}
 			this.each(function(el){

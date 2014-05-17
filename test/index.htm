@@ -6,7 +6,7 @@
     <title>xq test</title>
     <script>
     </script>
-    <!-- <script src="http://code.jquery.com/jquery-1.11.0.js"></script> -->
+    <!--<script src="http://code.jquery.com/jquery-1.11.0.js"></script>-->
 
     <script src="../../oquery/src/oquery.js"></script>
     <script src="../src/xq.js"></script>
@@ -20,20 +20,40 @@
     <style>
     #body {
         font-size:30px;
+        background:#ff0000;
+        width:300px;
+        height:300px;
+        display:none;
     }
     </style>
 </head>
 
 <body>
-    <div id="body">
-        阿打发地方
-    </div>
+    <button id="show">show</button>
+    <button id="hide">hide</button><br />
+    <span id="body">阿打发地方</span>
+
     <script>
     var body = $('#body');
 
 
-    body.animate({
-        'font-size':'10px'
+    /*body.animate({
+        'color':'#fff',
+        'font-size':'12px'
+    },1000,null,function(){
+        body.animate({
+            'color':'#f00',
+            'background-color':'#fff',
+            'font-size':'3em'
+        },1000);
+    });*/
+    var sh = $('#show'),
+        hi = $('#hide');
+    sh.bind('click',function(){
+        body.fadeIn('slow');
+    });
+    hi.bind('click',function(){
+        body.fadeOut('slow');
     });
     </script>
 </body>

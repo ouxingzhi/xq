@@ -44,7 +44,7 @@
         constructor: TimeLine,
         init: function(ops) {
             if (ops.duration) {
-                this.duration = ops.duration * 1000;
+                this.duration = ops.duration;
             }
             if (ops.compute) {
                 this.compute = ops.compute;
@@ -404,9 +404,9 @@
 	    		color[1] = parseInt('0x'+m[2]);
 	    		color[2] = parseInt('0x'+m[3]);
 	    	}else{
-	    		color[0] = parseInt('0x'+m[4]);
-	    		color[1] = parseInt('0x'+m[5]);
-	    		color[2] = parseInt('0x'+m[6]);
+	    		color[0] = parseInt('0x'+m[4]+m[4]);
+	    		color[1] = parseInt('0x'+m[5]+m[5]);
+	    		color[2] = parseInt('0x'+m[6]+m[6]);
 	    	}
     		return color;
    		};
@@ -420,7 +420,9 @@
     		return rgbaToColor(str);
     	}else if(regColorName.test(str)){
     		return nameToColor(str);
-    	}
+    	}else if(colorNameMap[str]){
+            return colorNameMap[str];
+        }
     	return null;
     }
 
@@ -442,12 +444,12 @@
 	    	b.length === 1 && (b = '0' + b);
 	    	return '#'+r+g+b;
 	    };
-    var regNumUnit = /^(-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+)))([a-z]+)/i,
+    var regNumUnit = /^(-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+)))([a-z]+)?/i,
         regNum = /^-?(?:\d+(?:\.(?:\d+)?)?|(?:\.\d+))$/i;
 
     var getStyleVal = function(el,sname){
-        var val = xq.css(el,sname);
-        return val === 'auto' ? 0 : (val = parseFloat(val),!isNaN(val)) ? val : 0;
+        var val = xq.css(el,sname),sval;
+        return val === 'auto' ? 0 : (sval = parseFloat(val),isNaN(sval)) ? val : sval;
     };
 
 	var buildDispose = function(params,list){
@@ -458,41 +460,306 @@
 				style:{}
 			};
 			xq.each(params,function(v,styleName){
-                var start,end,diff,sv,unit = 'px';
-                if(regNum.test(v)){
-                    v += 'px';
+                var start,end,diff,m,unit,send;
+                //颜色
+                if(end = getColor(v)){
+                    start = getStyleVal(el,styleName);
+                    start = getColor(start);
+                    if(!start) return;
+                    sty.style[styleName] = {
+                        start:start,
+                        end:end,
+                        diff:[
+                            end[0] - start[0],
+                            end[1] - start[1],
+                            end[2] - start[2]
+                        ],
+                        format:function(r){
+                            var color = 'rgb(' + parseInt(this.start[0] + r * this.diff[0]) + ',' + parseInt(this.start[1] + r * this.diff[1]) + ',' +  parseInt(this.start[2] + r * this.diff[2]) + ')';
+                            return color;
+                        }
+                    };
+                }else if(m = regNumUnit.exec(v)){
+                    end = parseFloat(m[1]);
+                    unit = m[2];
+                    //var m = regNumUnit.exec(v);
+                    //if(!m) return;
+                    //获得开始值
+                    start = getStyleVal(el,styleName);
+                    if(unit && unit !== 'px'){
+                        xq.css(el,styleName,v);
+                        send = end;
+                        end = getStyleVal(el,styleName);
+                        xq.css(el,styleName,start);
+                        start = (send / end) * start;
+                        end = (send / end) * end;
+                    }
+                    diff = end - start;
+                    
+                    sty.style[styleName] = {
+                        start:start,
+                        end:end,
+                        diff:diff,
+                        unit:unit,
+                        format:function(r){
+                            var size = (this.start + r * this.diff) + (this.unit || '');
+                            console.log(size,r,this.start,this.diff);
+                            return size;
+                        }
+                    };
                 }
-				var m = regNumUnit.exec(v);
-                if(!m) return;
-                //获得开始值
-                start = getStyleVal(el,styleName);
-                sv = parseFloat(m[1]);
-                unit = m[2];
-                if(unit !== 'px'){
-                    xq.css(el,styleName,v);
-                    end = getStyleVal(el,styleName);
-                    xq.css(el,styleName,start);
-                    start = (sv / end) * start;
-                    end = (sv / end) * end;
-                }else{
-                    end = sv;
-                }
-                diff = end - start;
-                
-				sty.style[styleName] = {
-					start:start,
-                    end:end,
-                    diff:diff,
-                    unit:unit
-				};
 			});
 			els.push(sty);
 		});
         return els;
 	};
+    var _getElSize = function(el){
+
+    }
+    var regspeed = /^\d+|slow|normal|fast$/i,
+        speedMap = {
+            slow: 600,
+            fast: 200,
+            normal: 400
+        };
+    var __show = xq.fn.show,
+        __hide = xq.fn.hide;
     xq.fn.extend({
     	animate:function(params,speed,easing,fn){
-    		console.log(buildDispose(params,this));
-    	}
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            params = params || {};
+            speed = speedMap[speed] || parseFloat(speed) || speedMap['normal'];
+            fn = fn || xq.noop;
+            easing = easing;
+            easingfn = xq.fx.easing[easing] || xq.fx.easing['swing'];
+    		var fxinfo = buildDispose(params,this);
+            var tl = new TimeLine({
+                duration:speed,
+                compute:easingfn,
+                handler:function(r){
+                    xq.each(fxinfo,function(obj){
+                        xq.each(obj.style,function(sty,styleName){
+                            xq.css(obj.el,styleName,sty.format(r));
+                        });
+                    });
+                },
+                complete:fn
+            });
+            tl.play();
+
+    	},
+        show:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            if(!speed){
+                this.each(function(el){
+                    if(el && el.style){
+                        el.style.display = 'inline-block';
+                    }
+                });
+            }else{
+                this.each(function(el){
+                    if(xq.css(el,'display') === 'none'){
+                        var $el = xq(el);
+                        $el.css({
+                            'display':'inline-block',
+                            'overflow':'hidden',
+                            'zoom':'1'
+                        });
+                        var h = $el.css('height'),
+                            w = $el.css('width');
+                        $el.css({
+                            'height':'0px',
+                            'width':'0px'
+                        });
+                        $el.animate({
+                            width:w,
+                            height:h
+                        },speed,easing,function(){
+                            $el.css({
+                                'height':'',
+                                'width':''
+                            });
+                            fn && fn();
+                        });
+                    }
+                });
+            }
+            return this;
+        },
+        hide:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            if(!speed){
+                this.each(function(el){
+                    if(el && el.style){
+                        el.style.display = 'none';
+                    }
+                });
+            }else{
+                this.each(function(el){
+                    if(xq.css(el,'display') !== 'none'){
+                        var $el = xq(el);
+                        $el.css({
+                            'display':'inline-block',
+                            'overflow':'hidden',
+                            'zoom':'1'
+                        });
+                        $el.animate({
+                            width:'0px',
+                            height:'0px'
+                        },speed,easing,function(){
+                            $el.css({
+                                'display':'none',
+                                'width':'',
+                                'height':''
+                            });
+                            fn && fn();
+                        });
+                    }
+                });
+            }
+            return this;
+        },
+        slideDown:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            this.each(function(el){
+                if(xq.css(el,'display') === 'none'){
+                    var $el = xq(el);
+                    $el.css({
+                        'display':'inline-block',
+                        'overflow':'hidden',
+                        'zoom':'1'
+                    });
+                    var h = $el.css('height');
+                    $el.css({
+                        'height':'0px'
+                    });
+                    $el.animate({
+                        height:h
+                    },speed,easing,function(){
+                        $el.css({
+                            'height':''
+                        });
+                        fn && fn();
+                    });
+                }
+            });
+            return this;
+        },
+        slideUp:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            this.each(function(el){
+                if(xq.css(el,'display') !== 'none'){
+                    var $el = xq(el);
+                    $el.css({
+                        'display':'inline-block',
+                        'overflow':'hidden',
+                        'zoom':'1'
+                    });
+                    $el.animate({
+                        height:'0px'
+                    },speed,easing,function(){
+                        $el.css({
+                            'display':'none',
+                            'height':''
+                        });
+                        fn && fn();
+                    });
+                }
+            });
+        },
+        fadeIn:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            this.each(function(el){
+                if(xq.css(el,'display') === 'none'){
+                    var $el = xq(el);
+                    $el.css({
+                        'opacity':'0',
+                        'display':'inline-block'
+                    });
+                    $el.animate({
+                        'opacity':'1'
+                    },speed,easing,function(){
+                        fn && fn();
+                    });
+                }
+            });
+            return this;
+        },
+        fadeOut:function(speed,easing,fn){
+            if(speed && !regspeed.test(speed)){
+                easing = speed;
+                fn = easing;
+                speed = null;
+            }
+            if(easing && !xq.isString(easing)){
+                fn = easing;
+                easing = null;
+            }
+            this.each(function(el){
+                if(xq.css(el,'display') !== 'none'){
+                    var $el = xq(el);
+                    $el.css({
+                        'opacity':'1'
+                    });
+                    $el.animate({
+                        'opacity':'0'
+                    },speed,easing,function(){
+                        $el.css({
+                            'display':'none'
+                        });
+                        fn && fn();
+                    });
+                }
+            });
+            return this;
+        }
     });
 }(window, document, xq);
