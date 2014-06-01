@@ -8,5 +8,5 @@ xQ Framework v0.1.0
 ```javascript
 $('#container').find('.sub').show()
 ```
-
-
+框架包括一个独立缓动时间轴，用来管理处理动画效果。   
+缓动效果测试页: http://ouxingzhi.github.io/xq   
