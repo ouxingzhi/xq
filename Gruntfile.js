@@ -16,6 +16,7 @@ module.exports = function(grunt) {
 		},
 		clean: ['build/*', 'docs/*'],
 		jshint: {
+			
 			options: {
 				undef: true,
 				browser: true,
